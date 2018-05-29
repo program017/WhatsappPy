@@ -34,10 +34,15 @@ def check(driver):
 
 def log(driver):
     name=raw_input('Enter the contact name or group name\n')
+    try:
+        user=driver.find_element_by_xpath('//span[@title="{}"]'.format(str(name)))
+        user.click()
+    except:
+        print 'Selected name is not present. Try Again.'
+        return
     tm=input('for how long you want to run the log. Enter in minutes\n')
     tm=tm*60
-    user=driver.find_element_by_xpath('//span[@title="{}"]'.format(str(name)))
-    user.click()
+    print 'Running log'
     fi=str(name)+'.txt'
     f=open(fi,'a')
     while True:
@@ -50,23 +55,24 @@ def log(driver):
             f2=open(fi,'r')
             flag=0
             for lines in f2:
-                if lines==text:
+                if str(lines.strip(' '))==str(text):
                     flag=1
             f2.close()
             if flag==0:
                 f.write(text)
             flag=0
         if act.text=='online':
-            print '{} is online'.format(name)
+            #print '{} is online'.format(name)
             time=dtn.now().strftime("%Y-%m-%d %H:%M")
             f2=open(fi,'r')
             flag1=0
             for lines in f2:
-                if lines==time:
+                if str(lines.strip(' '))==str(time):
                     flag1=1
             if flag1==0:
                 f.write(text)
         tm=tm-1
+        t.sleep(1)
         if tm<=0:
             f.close()
             return
