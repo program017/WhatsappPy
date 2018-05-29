@@ -1,5 +1,6 @@
 from selenium import webdriver as wbd
 import time as t
+from datetime import datetime as dtn
 
 def send(driver):
     name=raw_input('Enter the contact name or group name\n')
@@ -7,6 +8,10 @@ def send(driver):
     try:
         user=driver.find_element_by_xpath('//span[@title="{}"]'.format(str(name)))
         user.click()
+    except:
+        print 'Selected name is not present. Try Again'
+        return
+    try:
         #print 'user selected'
         msg_box= driver.find_element_by_class_name('_3F6QL')
         msg_box.click()
@@ -16,7 +21,7 @@ def send(driver):
         button=driver.find_element_by_class_name('_2lkdt')
         button.click()
     except:
-        print 'something is wrong. Trying again'
+        print 'Message could not be written. Try Again'
 
 def check(driver):
     #this facility is working for only last message. will extend it later
@@ -29,21 +34,40 @@ def check(driver):
 
 def log(driver):
     name=raw_input('Enter the contact name or group name\n')
+    tm=input('for how long you want to run the log. Enter in minutes\n')
+    tm=tm*60
     user=driver.find_element_by_xpath('//span[@title="{}"]'.format(str(name)))
     user.click()
     fi=str(name)+'.txt'
     f=open(fi,'a')
-    loc='O90ur'
     while True:
-        act=driver.find_element_by_xpath('.//span[@class="{}"]'.format(str(loc)))
+        act=driver.find_element_by_xpath('.//span[@class="{}"]'.format('O90ur'))
         if act.text=='click here for contact info':
             pass
         elif act.text.split(' ')[0]=='last':
             temp=act.text.split(' ')
-            f.write(str(temp[2])+str(temp[4])+str(temp[5]))
-            t.sleep(30)
+            text=str(temp[2])+' '+str(temp[4])+' '+str(temp[5])+'\n'
+            f2=open(fi,'r')
+            flag=0
+            for lines in f2:
+                if lines==text:
+                    flag=1
+            f2.close()
+            if flag==0:
+                f.write(text)
+            flag=0
         if act.text=='online':
             print '{} is online'.format(name)
+            time=dtn.now().strftime("%Y-%m-%d %H:%M")
+            f2=open(fi,'r')
+            flag1=0
+            for lines in f2:
+                if lines==time:
+                    flag1=1
+            if flag1==0:
+                f.write(text)
+        tm=tm-1
+        if tm<=0:
             f.close()
             return
 
