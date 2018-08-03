@@ -1,2 +1,2 @@
 # WhatsappPy
-Accessing Whatsapp through Command line
+Automating Whatsapp through Command line
