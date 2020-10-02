@@ -1,2 +1,2 @@
 # WhatsappPy
-Automating Whatsapp through Command line
+Automating Whatsapp through Selinium browser using Python
