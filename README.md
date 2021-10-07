@@ -1,2 +1,2 @@
 # WhatsappPy
-Automating Whatsapp through Selinium browser using Python
+Automating Whatsapp Bot through Selinium browser using Python
